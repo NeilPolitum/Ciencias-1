@@ -53,6 +53,17 @@ class Lista():
             print (p.info())
             p = p.sig()
             
+    def buscar(self, n):
+        p = self.__cab
+        q = p
+        while q != None :
+            if q.info()==n:
+                return True
+            else:
+                q=q.sig()
+        return False
+    
+    
 lista = Lista()
 dato = int(input("Digite numero a insertar. (-1) para terminar: "))
 while dato != -1:
@@ -61,3 +72,7 @@ while dato != -1:
     dato = int(input("Digite numero a insertar. (-1) para terminar: "))
     
 lista.escribir_lista()
+if lista.buscar(58):
+    print("Se encontró el número")
+else:
+    print("No se encontró el número")
