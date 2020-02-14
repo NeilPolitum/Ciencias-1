@@ -72,7 +72,8 @@ while dato != -1:
     dato = int(input("Digite numero a insertar. (-1) para terminar: "))
     
 lista.escribir_lista()
-if lista.buscar(58):
-    print("Se encontró el número")
+n=58
+if lista.buscar(n):
+    print("Se encontró el número "+str(n))
 else:
-    print("No se encontró el número")
+    print("No se encontró el número"+str(n))
