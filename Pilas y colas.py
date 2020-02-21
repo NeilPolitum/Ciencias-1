@@ -22,7 +22,7 @@ class Pila:
         if self.__cab == None:
             print("La pila esta vacia")
         else:
-            p = self.__cab.__info
+            p = self.__cab.getInfo()
             self.__cab = self.__cab.getSiguiente()
             return p
 
@@ -37,7 +37,9 @@ class Pila:
         else:
             p=self.__cab
             while p.getSiguiente() != None:
-                print("|"+p.__info+"|")
+                print("|"+str(p.getInfo())+"|")
+                p=p.getSiguiente()
+            print("|"+str(p.getInfo())+"|")
         
             
 class Cola:
@@ -49,18 +51,18 @@ class Cola:
         if self.__cab == None:
             print("La cola esta vacia")
         else:
-            p = self.__cab.__info
+            p = self.__cab.getInfo()
             self.__cab = self.__cab.getSiguiente()
             return p
         
     def insertar(self, info):
         if self.__cab == None:
-            print("La cola esta vacia")
+            self.__cab = Nodo(info)
         else:
             p=self.__cab
             while(p.getSiguiente()!=None):
                 p=p.getSiguiente()
-            p.cambiarSiguiente(Nodo (info))
+            p.cambiarSiguiente(Nodo(info))
             
     def imprimir(self):
         if self.__cab == None:
@@ -68,7 +70,9 @@ class Cola:
         else:
             p=self.__cab
             while p.getSiguiente()!= None:
-                print("|"+p.__info+"|")
+                print("|"+str(p.getInfo())+"|")
+                p=p.getSiguiente()
+            print("|"+str(p.getInfo())+"|")
                 
                 
 a=0
@@ -85,6 +89,8 @@ while a!=-1:
                 print("Se elimino el elemento "+str(pila.retirar()))
             elif b==3:
                 pila.imprimir()
+            else:
+                print("\nIngrese una opcion valida\n")
     
     elif a==2:
         cola=Cola()
@@ -97,3 +103,7 @@ while a!=-1:
                 print("Se elimino el elemento "+str(cola.retirar()))
             elif b==3:
                 cola.imprimir()
+            else:
+                print("\nIngrese una opcion valida\n")    
+    else:
+        print("\nIngrese una opcion valida\n")
