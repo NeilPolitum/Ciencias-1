@@ -50,7 +50,7 @@ class Lista_Doble():
     def insertar_Doble(self, nodo):
         if self.__cablista_doble == None:
             self.__cablista_doble = nodo
-            msg.set("Se insertó {}".format(nodo.info()))
+            msg.set("Se insertó el "+str(nodo.info()))
             return
         
         q = None
@@ -63,8 +63,6 @@ class Lista_Doble():
         if p!=None and p.info()==nodo.info():
             msg.set("{} ya esta en la lista".format(nodo.info()))
             return
-        
-        msg.set("Se insertó "+str(nodo.info()))
         if p==None:
             q.cambiar_sig(nodo)
             nodo.cambiar_ant(q)
@@ -79,6 +77,23 @@ class Lista_Doble():
                 q.cambiar_sig(nodo)
             else:
                 self.__cablista_doble = nodo
+        msg.set("Se insertó el "+str(nodo.info()))
+        
+    def escribir_lista_Doble(self):
+        print("Hacia adelante")
+        ult = None
+        p = self.__cablista_doble
+        
+        while p!=None:
+            ult = p
+            print(p.info())
+            p = p.sig()
+        
+        print("Hacia atrás")
+        
+        while ult!=None:
+            print(ult.info())
+            ult = ult.ant()
     
             
     def buscar_lista_Doble(self, numero):
@@ -138,6 +153,7 @@ class Lista_Doble():
             
     def pintar(self):
         lienzo.delete("all")
+        self.escribir_lista_Doble()
         p=self.__cablista_doble
         if p==None:
             msg.set("La lista esta vacia")
@@ -160,7 +176,7 @@ lista=Lista_Doble()
 
 def insBut():
     dato=tf.get()
-    nodo=Nodo_Dobles(dato)
+    nodo=Nodo_Dobles(int(dato))
     lista.insertar_Doble(nodo)
     tf.delete(0,'end')
     
