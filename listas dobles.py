@@ -12,6 +12,10 @@ var = tk.StringVar(value="Ingrese el numero:")
 label = tk.Label(root,textvariable = var)
 label.pack()
 label.place(x=10,y=30)
+msg = tk.StringVar()
+mensage = tk.Label(root, textvariable = msg)
+mensage.pack()
+mensage.place(x=320,y=20)
 tf.pack()
 tf.place(x=115,y=32)
 
@@ -46,7 +50,7 @@ class Lista_Doble():
     def insertar_Doble(self, nodo):
         if self.__cablista_doble == None:
             self.__cablista_doble = nodo
-            print("Se insertó {} en la cabeza".format(nodo.info()))
+            msg.set("Se insertó {}".format(nodo.info()))
             return
         
         q = None
@@ -57,10 +61,10 @@ class Lista_Doble():
             p = p.sig()
             
         if p!=None and p.info()==nodo.info():
-            print("{} ya esta en la lista".format(nodo.info()))
+            msg.set("{} ya esta en la lista".format(nodo.info()))
             return
         
-        print("Se insertó "+str(nodo.info()))
+        msg.set("Se insertó "+str(nodo.info()))
         if p==None:
             q.cambiar_sig(nodo)
             nodo.cambiar_ant(q)
@@ -76,21 +80,6 @@ class Lista_Doble():
             else:
                 self.__cablista_doble = nodo
     
-    def escribir_lista_Doble(self):
-        print("Hacia adelante")
-        ult = None
-        p = self.__cablista_doble
-        
-        while p!=None:
-            ult = p
-            print(p.info())
-            p = p.sig()
-        
-        print("Hacia atrás")
-        
-        while ult!=None:
-            print(ult.info())
-            ult = ult.ant()
             
     def buscar_lista_Doble(self, numero):
         comprobar = False
@@ -103,22 +92,22 @@ class Lista_Doble():
             p = p.sig()
         
         if comprobar:
-            print(str(numero)+" Si existe")
+            msg.set(str(numero)+" existe")
         else:
-            print(str(numero)+" No existe")
+            msg.set(str(numero)+" no existe")
     
     def retirar_lista_Doble(self, numero):
         if self.__cablista_doble==None:
-            print("{}".format("Lista Vacia"))
+            msg.set("{}".format("Lista Vacia"))
             return
         p = self.__cablista_doble
         
         if p.sig()==None and p.ant()==None:
             if p.info()==numero:
                 self.__cablista_doble = None
-                print("retirada la llave {}".format(numero))
+                msg.set("Retirada la llave {}".format(numero))
             else:
-                print ("No existe la llave {}".format(numero))
+                msg.set("No existe la llave {}".format(numero))
             return
         q = None
         
@@ -127,7 +116,7 @@ class Lista_Doble():
             p = p.sig()
             
         if p==None:
-            print("No existe la llave {}".format(numero))
+            msg.set("No existe la llave {}".format(numero))
             return
         
         if p.info()==numero:
@@ -143,15 +132,15 @@ class Lista_Doble():
                 s.cambiar_ant(None)
                 p = None
             
-            print("retirada la llave {}".format(numero))
+            msg.set("Retirada la llave {}".format(numero))
         else:
-            print("No existe la llave {}".format(numero))
+            msg.set("No existe la llave {}".format(numero))
             
     def pintar(self):
         lienzo.delete("all")
         p=self.__cablista_doble
         if p==None:
-            print("La lista esta vacia")
+            msg.set("La lista esta vacia")
             return
         contx=10
         conty=10
