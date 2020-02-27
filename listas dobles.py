@@ -146,6 +146,26 @@ class Lista_Doble():
             print("retirada la llave {}".format(numero))
         else:
             print("No existe la llave {}".format(numero))
+            
+    def pintar(self):
+        lienzo.delete("all")
+        p=self.__cablista_doble
+        if p==None:
+            print("La lista esta vacia")
+            return
+        contx=10
+        conty=10
+        contFila=0
+        while p != None:
+            lienzo.create_rectangle(contx,conty,contx+20,conty+20)
+            lienzo.create_text(contx+10,conty+10,text=str(p.info()))
+            if p.sig()!=None:
+                punta = "end"
+                if p.sig().ant() == p :
+                    punta = "both"
+                lienzo.create_line(contx+20,conty+10,contx+50,conty+10,arrow=punta)
+            p=p.sig()
+            contx+=50
 
 lista=Lista_Doble()
 
@@ -153,14 +173,17 @@ def insBut():
     dato=tf.get()
     nodo=Nodo_Dobles(dato)
     lista.insertar_Doble(nodo)
+    tf.delete(0,'end')
     
 def retBut():
     dato=tf.get()
     lista.retirar_lista_Doble(dato)
+    tf.delete(0,'end')
     
 def busBut():
     dato=tf.get()
     lista.buscar_lista_Doble(dato)
+    tf.delete(0,'end')
       
 ins=tk.Button(root, text="Insertar", command=insBut)
 ins.pack()
@@ -171,7 +194,7 @@ ret.place(x=250,y=60,width=50,height=20)
 bus=tk.Button(root, text="Buscar", command=busBut)
 bus.pack()
 bus.place(x=250,y=90,width=50,height=20)
-dib=tk.Button(root, text="Dibujar")
+dib=tk.Button(root, text="Dibujar", command=lista.pintar)
 dib.pack()
 dib.place(x=250,y=120,width=50,height=20)
 
