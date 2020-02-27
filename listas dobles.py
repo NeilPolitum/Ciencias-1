@@ -4,8 +4,8 @@ import tkinter as tk
 root = tk.Tk()
 root.geometry("500x600")
 root.title("Listas dobles")
-lienzo = tk.Canvas(root,width=500,height=450,background="#fafad2")
-lienzo.pack()
+lienzo = tk.Canvas(root,width=1000,height=450,background="#fafad2")
+lienzo.pack(expand=1)
 lienzo.place(x=0,y=150)
 tf = tk.Entry(root,width = 20)
 var = tk.StringVar(value="Ingrese el numero:")
@@ -182,7 +182,7 @@ def insBut():
     
 def retBut():
     dato=tf.get()
-    lista.retirar_lista_Doble(dato)
+    lista.retirar_lista_Doble(int(dato))
     tf.delete(0,'end')
     
 def busBut():
