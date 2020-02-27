@@ -1,27 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb 26 08:36:34 2020
-
-@author: estudiantes
-"""
-import Tkinter as tk
+import tkinter as tk
 
 #Interfaz
-
 root = tk.Tk()
-root.geometry("1000x1000")
+root.geometry("500x600")
 root.title("Listas dobles")
-lienzo = tk.Canvas(root,width=800,height=9000,background="#fafad2")
+lienzo = tk.Canvas(root,width=500,height=450,background="#fafad2")
 lienzo.pack()
-lienzo.place(x=0,y=0)
+lienzo.place(x=0,y=150)
 tf = tk.Entry(root,width = 20)
 var = tk.StringVar(value="Ingrese el numero:")
 label = tk.Label(root,textvariable = var)
 label.pack()
-label.place(x=0,y=30)
+label.place(x=10,y=30)
 tf.pack()
-tf.place(x=110,y=32)
-
+tf.place(x=115,y=32)
 
 
 # Lógica
@@ -54,6 +46,7 @@ class Lista_Doble():
     def insertar_Doble(self, nodo):
         if self.__cablista_doble == None:
             self.__cablista_doble = nodo
+            print("Se insertó {} en la cabeza".format(nodo.info()))
             return
         
         q = None
@@ -64,8 +57,10 @@ class Lista_Doble():
             p = p.sig()
             
         if p!=None and p.info()==nodo.info():
-            print("{nodo.info()} ya esta en la lista")
+            print("{} ya esta en la lista".format(nodo.info()))
             return
+        
+        print("Se insertó "+str(nodo.info()))
         if p==None:
             q.cambiar_sig(nodo)
             nodo.cambiar_ant(q)
@@ -116,7 +111,7 @@ class Lista_Doble():
         if self.__cablista_doble==None:
             print("{}".format("Lista Vacia"))
             return
-        p = self.__cablista_doble = None
+        p = self.__cablista_doble
         
         if p.sig()==None and p.ant()==None:
             if p.info()==numero:
@@ -152,40 +147,33 @@ class Lista_Doble():
         else:
             print("No existe la llave {}".format(numero))
 
+lista=Lista_Doble()
+
+def insBut():
+    dato=tf.get()
+    nodo=Nodo_Dobles(dato)
+    lista.insertar_Doble(nodo)
+    
+def retBut():
+    dato=tf.get()
+    lista.retirar_lista_Doble(dato)
+    
+def busBut():
+    dato=tf.get()
+    lista.buscar_lista_Doble(dato)
+      
+ins=tk.Button(root, text="Insertar", command=insBut)
+ins.pack()
+ins.place(x=250,y=30,width=50,height=20)
+ret= tk.Button(root, text="Retirar", command=retBut)
+ret.pack()
+ret.place(x=250,y=60,width=50,height=20)
+bus=tk.Button(root, text="Buscar", command=busBut)
+bus.pack()
+bus.place(x=250,y=90,width=50,height=20)
+dib=tk.Button(root, text="Dibujar")
+dib.pack()
+dib.place(x=250,y=120,width=50,height=20)
+
 root.mainloop()
 
-"""
-op=1    
-lista = None
-while op!=0:
-    print("¿Qué desea hacer?\n"
-          "1. Crear Lista\n"
-          "2. Insertar numero\n"
-          "3. Retirar numero\n"
-          "4. Buscar numero\n"
-          "5. Listar\n"
-          "0. Salir\n")
-    op = int(input("Digite opcion: "))
-
-    if op==1:
-        lista = Lista_Doble()
-        print("Lista creada vacia\n")
-    elif op==2:
-        if lista!=None:
-            dato = int(input("Digite numero a insertar: "))
-            nodo = Nodo_Dobles(dato)
-            lista.insertar_Doble(nodo)
-    elif op==3:
-        if lista!=None:
-            dato = int(input("Digite numero a retirar: "))
-            lista.retirar_lista_Doble(dato)
-    elif op==4:
-        if lista!=None:
-            dato = int(input("Digite numero a buscar: "))
-            lista.buscar_lista_Doble(dato)
-    elif op==5:
-        if lista!=None:
-            lista.escribir_lista_Doble()
-            
-"""
-            
