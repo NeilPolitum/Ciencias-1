@@ -10,10 +10,10 @@ lienzo = tk.Canvas(root,width=720,height=380,background="#fafad2")
 lienzo.pack()
 lienzo.place(x=10,y=300)
 
-for i in range(5):
+for i in range(6):
     tf.append(tk.Entry(root, width = 20))
 
-for i in range(8):
+for i in range(9):
     var.append(tk.StringVar())
     label.append(tk.Label(root, textvariable = var[i], borderwidth = 2))
 
@@ -31,6 +31,9 @@ tf[3].place(x=174,y=154)
 
 tf[4].pack()
 tf[4].place(x=174,y=231)
+
+tf[5].pack()
+tf[5].place(x=174,y=177)
 
 label[0].pack()
 label[0].place(x=0,y=0)
@@ -66,6 +69,10 @@ label[6].config(font = ("Courier",14), relief = "groove", width=15)
 label[7].pack()
 label[7].place(x=0,y=229)
 var[7].set("Ingrese el codigo del salon")
+
+label[8].pack()
+label[8].place(x=0,y=175)
+var[8].set("Ingrese el codigo del salon")
 
 
 
