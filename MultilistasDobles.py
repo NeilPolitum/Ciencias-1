@@ -30,10 +30,10 @@ tf[3].pack()
 tf[3].place(x=174,y=154)
 
 tf[4].pack()
-tf[4].place(x=174,y=231)
+tf[4].place(x=174,y=177)
 
 tf[5].pack()
-tf[5].place(x=174,y=177)
+tf[5].place(x=174,y=231)
 
 label[0].pack()
 label[0].place(x=0,y=0)
@@ -390,13 +390,48 @@ class Lista_Doble():
                 r = q.sig()
                 while r!=None:
                     print("     ",r.info())
-                    t = r.abajo()
-                    while t!=None:
-                        print("     ",t.info())
-                        t = t.abajo()
-                    r = r.sig()
+                    r = r.abajo()
                 q = q.abajo()
             s = s.sig()
+            
+    def pintar(self):
+        self.imprimir_Lista()
+        lienzo.delete("all")        
+        s=self.__cablista
+        contx=10
+        while s!=None:
+            lienzo.create_rectangle(contx,10,contx+50,30)
+            lienzo.create_text(contx+25,20, text=str(s.info()))
+            conty=110 
+            q=s.abajo()
+            while q!=None:
+                lienzo.create_line(contx+25,conty-80,contx+25,conty, arrow="last")
+                lienzo.create_rectangle(contx,conty-100,contx+50,conty-80)
+                lienzo.create_text(contx+25,conty+10, text=str(q.info()))
+                ##lienzo.create_line(contx+25,conty+20,contx+25,conty+40, arrow="last")
+                contx1=contx+50
+                r=q.sig()
+                if r!=None:
+                    lienzo.create_line(contx1,conty+10,contx1+25,conty+10, arrow="last")
+                    lienzo.create_rectangle(contx1+25,conty,contx1+75,conty+20)
+                    lienzo.create_text(contx1+50, conty+10, text=r.info())
+                    t=r.abajo()
+                    while t!=None:
+                        lienzo.create_line(contx1+50,conty+20,contx1+50,conty+40, arrow="last")
+                        lienzo.create_rectangle(contx1+25,conty+40,contx1+75,conty+60)
+                        lienzo.create_text(contx1+50,conty+50, text=t.info())
+                        t=t.abajo()
+                        conty=conty+60
+                    contx1=contx1+70
+                q=q.abajo()
+                conty=conty+100
+            if s.sig()!=None:
+                punta = "last"
+                if s.sig().ant() == s :
+                    punta = "both"
+                lienzo.create_line(contx+50,20,contx+160,20,arrow=punta)
+            s=s.sig()
+            contx=contx+160
 
 lista=Lista_Doble()
 
@@ -410,15 +445,23 @@ def inMat():
     tf[1].delete(0,'end')
     
 def inSal():
-    salon=tf[4].get()
+    salon=tf[5].get()
     nodoS = Nodo_Dobles(salon)
     lista.insertar_Salon(nodoS)
-    tf[4].delete(0,'end')
+    tf[5].delete(0,'end')
     
 def inEst():
-    estudiante=tf[2].get()
+    estudiante=tf[3].get()
+    salon = tf[4].get()
+    materia = tf[2].get()
     nodoE = Nodo_Dobles(estudiante)
-    lista.insertar_Estudiante()
+    nodoS = Nodo_Dobles(salon)
+    nodoM = Nodo_Dobles(materia)
+    lista.insertar_Estudiante(nodoS, nodoM, nodoE)
+    tf[2].delete(0,'end')
+    tf[3].delete(0,'end')
+    tf[4].delete(0,'end')
+    
 
 def retMat():
     salon=tf[1].get()
@@ -429,12 +472,58 @@ def retMat():
     tf[0].delete(0,'end')
     tf[1].delete(0,'end')
     
+def retEst():
+    estudiante=tf[3].get()
+    salon = tf[4].get()
+    materia = tf[2].get()
+    nodoS = Nodo_Dobles(salon)
+    nodoM = Nodo_Dobles(materia)
+    nodoE = Nodo_Dobles(estudiante)
+    lista.retirar_Estudiante(nodoS, nodoM, nodoE)
+    tf[2].delete(0,'end')
+    tf[3].delete(0,'end')
+    tf[4].delete(0,'end')
+    
+def retSal():
+    salon=tf[5].get()
+    nodo = Nodo_Dobles(salon)
+    lista.retirar_Salon(nodo)
+    tf[5].delete(0,'end')
+    
+def busMat():
+    salon=tf[1].get()
+    materia =tf[0].get()
+    nodoS = Nodo_Dobles(salon)
+    nodoM = Nodo_Dobles(materia)
+    lista.buscar_Materia(nodoS, nodoM)
+    tf[0].delete(0,'end')
+    tf[1].delete(0,'end')
+    
+def busEst():
+    estudiante=tf[3].get()
+    salon = tf[4].get()
+    materia = tf[2].get()
+    nodoS = Nodo_Dobles(salon)
+    nodoM = Nodo_Dobles(materia)
+    nodoE = Nodo_Dobles(estudiante)
+    lista.buscar_Estudiante(nodoS, nodoM, nodoE)
+    tf[2].delete(0,'end')
+    tf[3].delete(0,'end')
+    tf[4].delete(0,'end')
+    
+def busSal():
+    salon=tf[5].get()
+    nodoS = Nodo_Dobles(salon)
+    lista.buscar_Salon(nodoS)
+    tf[5].delete(0,'end')
+    
+    
 
 insmat = tk.Button(root,text="Insertar materia", width=15, command=inMat)
 insmat.pack()
 insmat.place(x=340,y=27)
 
-insest = tk.Button(root,text="Insertar alumno", width=15)
+insest = tk.Button(root,text="Insertar alumno", width=15, command=inEst)
 insest.pack()
 insest.place(x=340,y=140)
 
@@ -446,27 +535,27 @@ retmat = tk.Button(root,text="Retirar materia", width=15, command=retMat)
 retmat.pack()
 retmat.place(x=460,y=27)
 
-retest = tk.Button(root,text="Retirar alumno", width=15)
+retest = tk.Button(root,text="Retirar alumno", width=15, command=retEst)
 retest.pack()
 retest.place(x=460,y=140)
 
-retsal = tk.Button(root,text="Retirar salon", width=15)
+retsal = tk.Button(root,text="Retirar salon", width=15, command=retSal)
 retsal.pack()
 retsal.place(x=460,y=220)
 
-busmat = tk.Button(root,text="Buscar materia", width=15)
+busmat = tk.Button(root,text="Buscar materia", width=15, command=busMat)
 busmat.pack()
 busmat.place(x=580,y=27)
 
-busest = tk.Button(root,text="Buscar alumno", width=15)
+busest = tk.Button(root,text="Buscar alumno", width=15, command=busEst)
 busest.pack()
 busest.place(x=580,y=140)
 
-bussal = tk.Button(root,text="Buscar salon", width=15)
+bussal = tk.Button(root,text="Buscar salon", width=15, command=busSal)
 bussal.pack()
 bussal.place(x=580,y=220)
 
-lis = tk.Button(root,text="Listar", height = 2, width = 100)
+lis = tk.Button(root,text="Listar", height = 2, width = 100, command=lista.pintar)
 lis.pack()
 lis.place(x=20,y=260)
 
@@ -489,7 +578,6 @@ while op!=0:
           "10. Listar\n"
           "0. Salir")
     op = int(input("Digite opcion: "))
-
     if op==1:
         salon = raw_input("Escriba el salon a ingresar: ")
         nodo = Nodo_Dobles(salon)
