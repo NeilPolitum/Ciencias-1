@@ -402,29 +402,31 @@ class Lista_Doble():
         while s!=None:
             lienzo.create_rectangle(contx,10,contx+50,30)
             lienzo.create_text(contx+25,20, text=str(s.info()))
-            conty=110 
+            conty=30 
+            conty1=30
             q=s.abajo()
             while q!=None:
-                lienzo.create_line(contx+25,conty-80,contx+25,conty, arrow="last")
-                lienzo.create_rectangle(contx,conty-100,contx+50,conty-80)
-                lienzo.create_text(contx+25,conty+10, text=str(q.info()))
+                lienzo.create_line(contx+25,conty1,contx+25,conty+50, arrow="last")
+                lienzo.create_rectangle(contx,conty+50,contx+50,conty+70)
+                lienzo.create_text(contx+25,conty+60, text=str(q.info()))
                 ##lienzo.create_line(contx+25,conty+20,contx+25,conty+40, arrow="last")
                 contx1=contx+50
                 r=q.sig()
+                conty1=conty+70
                 if r!=None:
-                    lienzo.create_line(contx1,conty+10,contx1+25,conty+10, arrow="last")
-                    lienzo.create_rectangle(contx1+25,conty,contx1+75,conty+20)
-                    lienzo.create_text(contx1+50, conty+10, text=r.info())
+                    lienzo.create_line(contx1,conty+60,contx1+25,conty+60, arrow="last")
+                    lienzo.create_rectangle(contx1+25,conty+50,contx1+75,conty+70)
+                    lienzo.create_text(contx1+50, conty+60, text=r.info())
                     t=r.abajo()
                     while t!=None:
-                        lienzo.create_line(contx1+50,conty+20,contx1+50,conty+40, arrow="last")
-                        lienzo.create_rectangle(contx1+25,conty+40,contx1+75,conty+60)
-                        lienzo.create_text(contx1+50,conty+50, text=t.info())
+                        lienzo.create_line(contx1+50,conty+70,contx1+50,conty+90, arrow="last")
+                        lienzo.create_rectangle(contx1+25,conty+90,contx1+75,conty+110)
+                        lienzo.create_text(contx1+50,conty+100, text=t.info())
                         t=t.abajo()
-                        conty=conty+60
+                        conty=conty+40
                     contx1=contx1+70
                 q=q.abajo()
-                conty=conty+100
+                conty=conty+50
             if s.sig()!=None:
                 punta = "last"
                 if s.sig().ant() == s :
