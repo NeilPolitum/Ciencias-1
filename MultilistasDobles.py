@@ -6,8 +6,18 @@ root.geometry("750x700")
 tf = []
 var = []
 label = []
-lienzo = tk.Canvas(root,width=720,height=380,background="#fafad2")
-lienzo.pack()
+frame=tk.Frame(root,width=720,height=380)
+frame.pack(expand=True,fill="both")
+lienzo = tk.Canvas(frame,width=720,height=380,background="#fafad2", scrollregion=(0,0,1500,1500))
+barra_h = tk.Scrollbar(frame, orient="horizontal")
+barra_h.pack(side="bottom", fill="x")
+barra_h.config(command=lienzo.xview)
+barra_v = tk.Scrollbar(frame, orient="vertical")
+barra_v.pack(side="right", fill="y")
+barra_v.config(command=lienzo.yview)
+lienzo.config(xscrollcommand=barra_h.set, yscrollcommand=barra_v.set)
+lienzo.config(width=720,height=380)
+lienzo.pack(side="left",expand=True)
 lienzo.place(x=10,y=300)
 
 for i in range(6):
@@ -561,80 +571,4 @@ lis = tk.Button(root,text="Listar", height = 2, width = 100, command=lista.pinta
 lis.pack()
 lis.place(x=20,y=260)
 
-root.mainloop()
-
-'''
-op=1    
-lista = Lista_Doble()
-while op!=0:
-    print("\n¿Qué desea hacer?\n"
-          "1. Ingresar un salon\n"
-          "2. Ingresar una materia\n"
-          "3. Ingresar un alumno\n"
-          "4. Buscar salon\n"
-          "5. Buscar materia\n"
-          "6. Buscar estudiante\n"
-          "7. Retirar salon\n"
-          "8. Retirar materia\n"
-          "9. Retirar estudiante\n"
-          "10. Listar\n"
-          "0. Salir")
-    op = int(input("Digite opcion: "))
-    if op==1:
-        salon = raw_input("Escriba el salon a ingresar: ")
-        nodo = Nodo_Dobles(salon)
-        lista.insertar_Salon(nodo)
-    elif op==2:
-        salon = raw_input("Escriba el salon donde ingresar la materia: ")
-        materia = raw_input("Escriba la materia a ingresar: ")
-        nodoS = Nodo_Dobles(salon)
-        nodoM = Nodo_Dobles(materia)
-        lista.insertar_Materia(nodoS, nodoM)
-    elif op==3:
-        salon = raw_input("Escriba el salon donde ingresar el estudiante: ")
-        materia = raw_input("Escriba la materia donde ingresar el estudiante: ")
-        estudiante = raw_input("Escriba el alumno a ingresar: ")
-        nodoS = Nodo_Dobles(salon)
-        nodoM = Nodo_Dobles(materia)
-        nodoE = Nodo_Dobles(estudiante)
-        lista.insertar_Estudiante(nodoS, nodoM, nodoE)
-    elif op==4:
-        salon = raw_input("Escriba el salon a buscar: ")
-        nodo = Nodo_Dobles(salon)
-        lista.buscar_Salon(nodo)
-    elif op==5:
-        salon = raw_input("Escriba el salon donde se encuentra la materia: ")
-        materia = raw_input("Escriba la materia a buscar: ")
-        nodoS = Nodo_Dobles(salon)
-        nodoM = Nodo_Dobles(materia)
-        lista.buscar_Materia(nodoS, nodoM)
-    elif op==6:
-        salon = raw_input("Escriba el salon donde se encuentra el estudiante: ")
-        materia = raw_input("Escriba la materia donde se encuentra el estudiante: ")
-        estudiante = raw_input("Escriba el alumno a buscar: ")
-        nodoS = Nodo_Dobles(salon)
-        nodoM = Nodo_Dobles(materia)
-        nodoE = Nodo_Dobles(estudiante)
-        lista.buscar_Estudiante(nodoS, nodoM, nodoE)
-    elif op==7:
-        salon = raw_input("Escriba el salon a retirar: ")
-        nodo = Nodo_Dobles(salon)
-        lista.retirar_Salon(nodo)
-    elif op==8:
-        salon = raw_input("Escriba el salon donde se encuentra la materia: ")
-        materia = raw_input("Escriba la materia a eliminar: ")
-        nodoS = Nodo_Dobles(salon)
-        nodoM = Nodo_Dobles(materia)
-        lista.retirar_Materia(nodoS, nodoM)
-    elif op==9:
-        salon = raw_input("Escriba el salon donde se encuentra el estudiante: ")
-        materia = raw_input("Escriba la materia donde se encuentra el estudiante: ")
-        estudiante = raw_input("Escriba el alumno a eliminar: ")
-        nodoS = Nodo_Dobles(salon)
-        nodoM = Nodo_Dobles(materia)
-        nodoE = Nodo_Dobles(estudiante)
-        lista.retirar_Estudiante(nodoS, nodoM, nodoE)
-    elif op==10:
-        print("\n")
-        lista.imprimir_Lista()
-'''
+root.mainloop()             
