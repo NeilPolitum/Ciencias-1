@@ -1,8 +1,46 @@
 import tkinter as tk
 
 root = tk.Tk()
-root.geometry("700x700")
+root.geometry("500x500")
 root.title("Reconstruccion de arboles")
+var = []
+label = []
+for i in range(4):
+    var.append(tk.StringVar())
+    label.append(tk.Label(root, textvariable = var[i], borderwidth = 2))
+    label[i].pack()
+    
+var[0].set("In-Order:")
+label[0].place(x=150,y=20)
+tfIn=tk.Entry(root,width=20)
+tfIn.pack()
+tfIn.place(x=210,y=20)
+
+var[1].set("Pre:")
+label[1].place(x=20,y=60)
+tfPre=tk.Entry(root,width=20)
+tfPre.pack()
+tfPre.place(x=70,y=60)
+
+var[2].set("Post:")
+label[2].place(x=260,y=60)
+tfPost=tk.Entry(root,width=20)
+tfPost.pack()
+tfPost.place(x=310,y=60)
+
+frame=tk.Frame(root,width=460,height=250)
+frame.pack(expand=True, fill="both") #.grid(row=0,column=0)
+canvas=tk.Canvas(frame,bg='#FFFFFF',scrollregion=(0,0,1500,1500))
+hbar=tk.Scrollbar(frame,orient="horizontal")
+hbar.pack(side="bottom",fill="x")
+hbar.config(command=canvas.xview)
+vbar=tk.Scrollbar(frame,orient="vertical")
+vbar.pack(side="right",fill="y")
+vbar.config(command=canvas.yview)
+canvas.config(width=460,height=250)
+canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
+canvas.pack(side="left",expand=True,fill="both")
+frame.place(x=10,y=150)
 
 class Nodo():
     def __init__(self, dato):
@@ -27,6 +65,8 @@ class Nodo():
 class Arbol():
     def __init__(self):
         self.__raiz=None
+        self.__contx=10
+        self.__conty=10
         
     def posorden(self, raiz):
         if raiz != None:
@@ -81,6 +121,8 @@ class Arbol():
             
         else:
             return p
+        canvas.delete("all")
+        self.dibujar(self.__raiz)
         
     def recArbolPost(self, inOrder, postOrder, raiz=None):
         
@@ -115,9 +157,56 @@ class Arbol():
             
         else:
             return p
-            
-                
+        canvas.delete("all")
+        self.dibujar(self.__raiz)
+    
+    def dibujar(self,raiz,contx=10,conty=10,raizOrigen=Nodo(None)):
+        if raiz != None:
+            self.dibujar(raiz.rIzq(),contx,conty+40,raiz)
+            p=raiz.rIzq()
+            contx0=contx
+            while p!=None:
+                contx=contx+40
+                p=p.rIzq()
+            self.dibujar(raiz.rDer(),contx+40,conty+40,raiz)
+            if raizOrigen.rIzq()==raiz:
+                canvas.create_line(contx+40,conty-30,contx+10,conty,arrow="last")
+            if raizOrigen.rDer()==raiz:
+                canvas.create_line(contx0-20,conty-30,contx+10,conty,arrow="last")
+            canvas.create_rectangle(contx,conty,contx+20,conty+20)
+            canvas.create_text(contx+10,conty+10,text=str(raiz.info()))
+            print(str(raiz.info()))
         
+def inpr():
+    ar = Arbol()
+    inoS=tfIn.get()
+    preS=tfPre.get()
+    pre=preS.split(",")
+    ino=inoS.split(",")
+    ar.recArbolPre(ino,pre)
+    tfIn.delete(0,'end')
+    tfPre.delete(0,'end')
+    
+def inpo():
+    ar=Arbol()
+    inoS=tfIn.get()
+    postS=tfPost.get()
+    post=postS.split(",")
+    ino=inoS.split(",")
+    ar.recArbolPost(ino,post)
+    tfIn.delete(0,'end')
+    tfPost.delete(0,'end')
+    
+inpre = tk.Button(root, text="In-Pre", command=inpr)
+inpre.pack()        
+inpre.place(x=80,y=100)
+
+inpost = tk.Button(root, text="In-Post", command=inpo)
+inpost.pack()        
+inpost.place(x=320,y=100)
+                
+root.mainloop()
+'''    
 op = 99
 ar = Arbol()
 while op != 0:
@@ -153,6 +242,6 @@ while op != 0:
     elif(op==0):
         print("Calabaza, calabaza, cada quien pa su gran puta mierda")
         
-        
+'''
         
         
