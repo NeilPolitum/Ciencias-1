@@ -28,6 +28,9 @@ tfPost=tk.Entry(root,width=20)
 tfPost.pack()
 tfPost.place(x=310,y=60)
 
+var[3].set("Los elementos de los arreglos deben ir separados por comas. Ej: 1,2,3,4")
+label[3].place(x=10,y=440)
+
 frame=tk.Frame(root,width=460,height=250)
 frame.pack(expand=True, fill="both") #.grid(row=0,column=0)
 canvas=tk.Canvas(frame,bg='#FFFFFF',scrollregion=(0,0,1500,1500))
@@ -67,6 +70,7 @@ class Arbol():
         self.__raiz=None
         self.__contx=10
         self.__conty=10
+        self.__tempx=0
         
     def posorden(self, raiz):
         if raiz != None:
@@ -92,15 +96,7 @@ class Arbol():
     def recArbolPre(self, inOrder, preOrder, raiz=None):
         if len(inOrder)!=len(preOrder):
             print("Vectores con diferentes longitudes")
-            return     
-        print("----------------------------------------------------------------")
-        print("Pre:")
-        for i in preOrder:
-            print(i)
-        
-        print("In:")
-        for i in inOrder:
-            print(i)
+            return
             
         if len(preOrder)>0:
             info=preOrder[0]
@@ -125,15 +121,6 @@ class Arbol():
         self.dibujar(self.__raiz)
         
     def recArbolPost(self, inOrder, postOrder, raiz=None):
-        
-        print("-------------------------")
-        print("Post:")
-        for i in postOrder:
-            print(i)
-        
-        print("In:")
-        for i in inOrder:
-            print(i)
         if len(inOrder)!=len(postOrder):
             print("Vectores con diferentes longitudes")
             return     
@@ -160,22 +147,30 @@ class Arbol():
         canvas.delete("all")
         self.dibujar(self.__raiz)
     
-    def dibujar(self,raiz,contx=10,conty=10,raizOrigen=Nodo(None)):
+    def dibujar(self,raiz,contx=0,conty=0):
         if raiz != None:
-            self.dibujar(raiz.rIzq(),contx,conty+40,raiz)
+            cont=40
             p=raiz.rIzq()
-            contx0=contx
+            if p!=None:
+                q=p.rIzq()
+                while q!=None:
+                    cont+=40
+                    q=q.rIzq()
             while p!=None:
-                contx=contx+40
-                p=p.rIzq()
-            self.dibujar(raiz.rDer(),contx+40,conty+40,raiz)
-            if raizOrigen.rIzq()==raiz:
-                canvas.create_line(contx+40,conty-30,contx+10,conty,arrow="last")
-            if raizOrigen.rDer()==raiz:
-                canvas.create_line(contx0-20,conty-30,contx+10,conty,arrow="last")
-            canvas.create_rectangle(contx,conty,contx+20,conty+20)
-            canvas.create_text(contx+10,conty+10,text=str(raiz.info()))
-            print(str(raiz.info()))
+                if p!=raiz.rIzq():   
+                    cont+=40
+                p=p.rDer()
+            self.__conty+=40
+            self.dibujar(raiz.rIzq(),self.__contx+cont,self.__conty-30)
+            self.__conty-=40
+            canvas.create_rectangle(self.__contx,self.__conty,self.__contx+20,self.__conty+20)
+            canvas.create_text(self.__contx+10,self.__conty+10,text=str(raiz.info()))
+            if contx!=0:
+                canvas.create_line(contx,conty,self.__contx+10,self.__conty,arrow="last")
+            self.__contx+=40
+            self.__conty+=40
+            self.dibujar(raiz.rDer(),self.__contx-20,self.__conty-30)
+            self.__conty-=40
         
 def inpr():
     ar = Arbol()
