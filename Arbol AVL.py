@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Mar 27 12:01:34 2020
-
 @author: danie
 """
 
@@ -316,61 +315,51 @@ while op != 0:
     op = int(input("Digite la opcion: "))
     
     if op == 1:
-        nombre = raw_input("Ingrese el nombre del arbol: ")
+        nombre = input("Ingrese el nombre del arbol: ")
         manejoArbol.ingresarArbol(nombre,1)
     
     elif op == 2:
-        arbol = raw_input("Ingrese el nombre del arbol: ")
+        arbol = input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,1):
             pos = manejoArbol.getPosicion()
             codA = int(input("Ingrese el codigo del alumno: "))
-            nomA = raw_input("Ingrese el nombre del alumno: ")
+            nomA = input("Ingrese el nombre del alumno: ")
             arbolAlumno[pos].insertarNodo(codA,nomA)
         
     elif op == 3:
-        arbol = raw_input("Ingrese el nombre del arbol: ")
+        arbol = input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,1):
             pos = manejoArbol.getPosicion()
             codA = int(input("Ingrese el codigo del alumno: "))
             arbolAlumno[pos].eliminarNodo(codA)
     
     elif op == 4:
-        arbol = raw_input("Ingrese el nombre del arbol: ")
+        arbol = input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,1):
             pos = manejoArbol.getPosicion()
             arbolAlumno[pos].mostrar(arbolAlumno[pos].getRaiz())
             
     elif op == 5:
-        nombre = raw_input("Ingrese el nombre del arbol: ")
+        nombre = input("Ingrese el nombre del arbol: ")
         manejoArbol.ingresarArbol(nombre,2)
     
     elif op == 6:
-        arbol = raw_input("Ingrese el nombre del arbol: ")
+        arbol = input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,2):
             pos = manejoArbol.getPosicion()
             codM = int(input("Ingrese el codigo del alumno: "))
-            nomM = raw_input("Ingrese el nombre del alumno: ")
+            nomM = input("Ingrese el nombre del alumno: ")
             arbolMateria[pos].insertarNodo(codM,nomM)
             
     elif op == 7:
-        break
+        arbol = input("Ingrese el nombre del arbol: ")
+        if manejoArbol.existeArbol(arbol,2):
+            pos = manejoArbol.getPosicion()
+            codM = int(input("Ingrese el codigo de la materia: "))
+            arbolMateria[pos].eliminarNodo(codM)
     
     elif op == 8:
-        arbol = raw_input("Ingrese el nombre del arbol: ")
+        arbol = input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,2):
             pos = manejoArbol.getPosicion()
             arbolMateria[pos].mostrar(arbolMateria[pos].getRaiz())
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
