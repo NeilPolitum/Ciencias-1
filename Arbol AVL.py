@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+input
 """
 Created on Fri Mar 27 12:01:34 2020
+
 @author: danie
 """
 
@@ -38,9 +40,6 @@ class Nodo:
     def cambiar_padre(self, direcc):
         if direcc is not None:
             self.__padre = direcc
-            self.peso = self.padre.peso + 1
-        else:
-            self.peso = 0
     
     def cambiar_peso(self, num):
         self.peso = num
@@ -73,139 +72,64 @@ class ArbolAVL:
             padreNodo = None
             nodoActual = self.raiz
             
-            while True:
-                if nodoActual is not None:
-                    padreNodo = nodoActual
-                    if nodo.dato<nodoActual.dato:
-                        nodoActual = nodoActual.izq()
-                    else:
-                        nodoActual = nodoActual.der()
+            while nodoActual is not None:
+                padreNodo = nodoActual
+                if nodo.dato<nodoActual.dato:
+                    nodoActual = nodoActual.izq()
+                    padreNodo.cambiar_peso(padreNodo.peso + 1)
                 else:
-                    nodo.cambiar_peso(padreNodo.peso)
-                    padreNodo.cambiar_peso(padreNodo.peso+1)
-                    if nodo.dato < padreNodo.dato:
-                        padreNodo.cambiar_izq(nodo)
-                    else:
-                        padreNodo.cambiar_der(nodo)
-                    self.rebalancear(nodo)
-                    print("Agregado correctamente")
-                    self.tamano += 1
-                    break
-    
-    def eliminarNodo(self, codA):
-        nodoActual = self.getRaiz()
-        padreNodo = None
-        nodo = Nodo(codA)
-        
-        while nodoActual.dato != None:
-            if nodo.dato<nodoActual.dato:
-                padreNodo = nodoActual
-                nodoActual = nodoActual.izq()
-            elif nodo.dato>nodoActual.dato:
-                padreNodo = nodoActual
-                nodoActual = nodoActual.der()
-            else: break
-            
-        if nodoActual == None:
-            print("No existe el codigo.")
-        else:
-            if nodoActual.izq() == None:
-                r = nodoActual.der()
-            elif nodoActual.der() == None:
-                r = nodoActual.izq()
+                    nodoActual = nodoActual.der()
+                    padreNodo.cambiar_peso(padreNodo.peso - 1)
+            if nodo.dato < padreNodo.dato:
+                padreNodo.cambiar_izq(nodo)
             else:
-                s = nodoActual
-                r = nodoActual.der()
-                t = r.izq()
-                while t != None:
-                    s = r
-                    r = t
-                    t = t.izq()
-                
-                if nodoActual != s:
-                    s.cambiar_izq(r.der())
-                    r.cambiar_der(nodoActual.der())
-                r.cambiar_izq(nodoActual.izq())
-        
-            if padreNodo==None:
-                self.raiz = r
-            elif nodoActual == padreNodo.izq():
-                padreNodo.cambiar_izq(r)
-            else:
-                padreNodo.cambiar_der(r)
-            """
-            longitud = len(self.codigo)
-            
-            for i in range(longitud):
-                if nodoActual.dato == self.codigo[i]:
-                    del(self.codigo[i])
-                    del(self.nombre[i])
-                    break
-            """
+                padreNodo.cambiar_der(nodo)
+            nodo.cambiar_padre(padreNodo)
             self.rebalancear(nodo)
-            nodoActual = None
+            print("Agregado correctamente")
+            self.tamano += 1
     
     def rebalancear(self,nodo):
         n = nodo
         while n is not None:
-            pesoDerecha = n.peso
-            pesoIzquierda = n.peso
-            
-            if n.der() is not None:
-                pesoDerecha = n.der().peso
-                
-            if n.izq() is not None:
-                pesoIzquierda = n.izq().peso
-                
-            if abs(pesoIzquierda - pesoDerecha) > 1:
-                if pesoIzquierda > pesoDerecha:
-                    hijoIzquierda = n.izq()
-                    if hijoIzquierda is not None:
-                        pDer = (hijoIzquierda.der().peso
-                                if (hijoIzquierda.der() is not None) else 0)
-                        pIzq = (hijoIzquierda.izq().peso
-                                if (hijoIzquierda.izq() is not None) else 0)
-                    if (pIzq > pDer):
-                        self.rotarIzquierda(n)
-                        break
-                    else:
-                        self.dobleRotarDerecha(n)
-                        break
-                else:
-                    hijoDerecha = n.der()
-                    if hijoDerecha is not None:
-                        pDer = (hijoDerecha.der().peso
-                                if (hijoDerecha.der() is not None) else 0)
-                        pIzq = (hijoDerecha.izq().peso
-                                if (hijoDerecha.izq() is not None) else 0)
-                    if (pIzq > pDer):
-                        self.dobleRotarIzquierda(n)
-                        break
-                    else:
-                        self.rotarDerecha(n)
-                        break
+            if n.padre()!= None:
+                padreN = nodo.padre()
+                if padreN.padre() != None:
+                    abuelo = padreN.padre()
+                    if abuelo.peso == 2 and padreN.peso == 1:
+                        self.rotarIzquierdas(padreN)
+                    elif abuelo.peso == 2 and padreN.peso == -1:
+                        self.dobleRotarIzquierda(padreN)
+                    elif abuelo.peso == -2 and padreN.peso == 1:
+                        self.dobleRotarDerecha(padreN)
+                    elif abuelo.peso == -2 and padreN.peso == -1:
+                        self.rotarDerecha(padreN)
             n = n.padre()
             
     def rotarIzquierda(self, nodo):
         aux = nodo.padre().dato
         nodo.padre().cambiar_dato(nodo.dato)
         nodo.padre().cambiar_der(Nodo(aux))
-        nodo.padre().der().cambiar_peso(nodo.padre().peso + 1)
-        nodo.padre().cambiar_izq(nodo.der())
+        nodo.padre().cambiar_izq(nodo.izq())
+        nodo.padre().cambiar_peso(abs(nodo.padre().izq().peso - nodo.padre().der().peso))
+        if nodo.padre().padre() != None:
+            nodo.padre().padre().cambiar_peso(nodo.padre().padre().peso - 1)
         
     def rotarDerecha(self, nodo):
         aux = nodo.padre().dato
         nodo.padre().cambiar_dato(nodo.dato)
         nodo.padre().cambiar_izq(Nodo(aux))
-        nodo.padre().izq().cambiar_peso(nodo.padre().peso + 1) 
         nodo.padre().cambiar_der(nodo.der())
+        nodo.padre().cambiar_peso(abs(nodo.padre().izq().peso - nodo.padre().der().peso))
+        if nodo.padre().padre() != None:
+            nodo.padre().padre().cambiar_peso(nodo.padre().padre().peso + 1)
         
     def dobleRotarIzquierda(self, nodo):
-        self.rotarDerecha(nodo.der().der())
+        self.rotarDerecha(nodo.der())
         self.rotarIzquierda(nodo)
     
     def dobleRotarDerecha(self, nodo):
-        self.rotarIzquierda(nodo.izq().izq())
+        self.rotarIzquierda(nodo.izq())
         self.rotarDerecha(nodo)
         
     def vacio(self):
@@ -315,51 +239,116 @@ while op != 0:
     op = int(input("Digite la opcion: "))
     
     if op == 1:
-        nombre = input("Ingrese el nombre del arbol: ")
+        nombre = raw_input("Ingrese el nombre del arbol: ")
         manejoArbol.ingresarArbol(nombre,1)
     
     elif op == 2:
-        arbol = input("Ingrese el nombre del arbol: ")
+        arbol = raw_input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,1):
             pos = manejoArbol.getPosicion()
             codA = int(input("Ingrese el codigo del alumno: "))
-            nomA = input("Ingrese el nombre del alumno: ")
+            nomA = raw_input("Ingrese el nombre del alumno: ")
             arbolAlumno[pos].insertarNodo(codA,nomA)
         
     elif op == 3:
-        arbol = input("Ingrese el nombre del arbol: ")
+        arbol = raw_input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,1):
             pos = manejoArbol.getPosicion()
             codA = int(input("Ingrese el codigo del alumno: "))
             arbolAlumno[pos].eliminarNodo(codA)
     
     elif op == 4:
-        arbol = input("Ingrese el nombre del arbol: ")
+        arbol = raw_input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,1):
             pos = manejoArbol.getPosicion()
+            print("Raíz: "+str(arbolAlumno[pos].getRaiz().dato))
             arbolAlumno[pos].mostrar(arbolAlumno[pos].getRaiz())
             
     elif op == 5:
-        nombre = input("Ingrese el nombre del arbol: ")
+        nombre = raw_input("Ingrese el nombre del arbol: ")
         manejoArbol.ingresarArbol(nombre,2)
     
     elif op == 6:
-        arbol = input("Ingrese el nombre del arbol: ")
+        arbol = raw_input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,2):
             pos = manejoArbol.getPosicion()
             codM = int(input("Ingrese el codigo del alumno: "))
-            nomM = input("Ingrese el nombre del alumno: ")
+            nomM = raw_input("Ingrese el nombre del alumno: ")
             arbolMateria[pos].insertarNodo(codM,nomM)
             
     elif op == 7:
-        arbol = input("Ingrese el nombre del arbol: ")
-        if manejoArbol.existeArbol(arbol,2):
-            pos = manejoArbol.getPosicion()
-            codM = int(input("Ingrese el codigo de la materia: "))
-            arbolMateria[pos].eliminarNodo(codM)
+        break
     
     elif op == 8:
-        arbol = input("Ingrese el nombre del arbol: ")
+        arbol = raw_input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,2):
             pos = manejoArbol.getPosicion()
             arbolMateria[pos].mostrar(arbolMateria[pos].getRaiz())
+
+"""  
+    def eliminarNodo(self, codA):
+        nodoActual = self.getRaiz()
+        padreNodo = None
+        nodo = Nodo(codA)
+        
+        while nodoActual.dato != None:
+            if nodo.dato<nodoActual.dato:
+                padreNodo = nodoActual
+                nodoActual = nodoActual.izq()
+            elif nodo.dato>nodoActual.dato:
+                padreNodo = nodoActual
+                nodoActual = nodoActual.der()
+            else: break
+            
+        if nodoActual == None:
+            print("No existe el codigo.")
+        else:
+            if nodoActual.izq() == None:
+                r = nodoActual.der()
+            elif nodoActual.der() == None:
+                r = nodoActual.izq()
+            else:
+                s = nodoActual
+                r = nodoActual.der()
+                t = r.izq()
+                while t != None:
+                    s = r
+                    r = t
+                    t = t.izq()
+                
+                if nodoActual != s:
+                    s.cambiar_izq(r.der())
+                    r.cambiar_der(nodoActual.der())
+                r.cambiar_izq(nodoActual.izq())
+        
+            if padreNodo==None:
+                self.raiz = r
+            elif nodoActual == padreNodo.izq():
+                padreNodo.cambiar_izq(r)
+            else:
+                padreNodo.cambiar_der(r)
+            
+            longitud = len(self.codigo)
+            
+            for i in range(longitud):
+                if nodoActual.dato == self.codigo[i]:
+                    del(self.codigo[i])
+                    del(self.nombre[i])
+                    break
+            
+            
+            self.rebalancear(nodo)
+            nodoActual = None
+"""
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
