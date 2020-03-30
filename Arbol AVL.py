@@ -92,37 +92,56 @@ class ArbolAVL:
     def rebalancear(self,nodo):
         n = nodo
         while n is not None:
+            print("codigo: "+str(n.dato))
             if n.padre()!= None:
-                padreN = nodo.padre()
+                padreN = n.padre()
+                print("padre: "+str(padreN.dato))
                 if padreN.padre() != None:
                     abuelo = padreN.padre()
+                    print("abuelo: "+str(abuelo.dato))
                     if abuelo.peso == 2 and padreN.peso == 1:
+                        print("rota izquierda")
                         self.rotarIzquierdas(padreN)
                     elif abuelo.peso == 2 and padreN.peso == -1:
+                        print("doble rota izquierda")
                         self.dobleRotarIzquierda(padreN)
                     elif abuelo.peso == -2 and padreN.peso == 1:
+                        print("doble rota derecha")
                         self.dobleRotarDerecha(padreN)
                     elif abuelo.peso == -2 and padreN.peso == -1:
+                        print("rota derecha")
                         self.rotarDerecha(padreN)
             n = n.padre()
             
     def rotarIzquierda(self, nodo):
         aux = nodo.padre().dato
+        nuevoAux = Nodo(aux)
         nodo.padre().cambiar_dato(nodo.dato)
-        nodo.padre().cambiar_der(Nodo(aux))
+        nodo.padre().cambiar_der(nuevoAux)
         nodo.padre().cambiar_izq(nodo.izq())
-        nodo.padre().cambiar_peso(abs(nodo.padre().izq().peso - nodo.padre().der().peso))
+        pIzq = (nodo.padre().izq().peso
+                if (nodo.padre().izq() is not None) else 0)
+        pDer = (nodo.padre().der().peso
+                if (nodo.padre().der() is not None) else 0)
+        nodo.padre().cambiar_peso(pIzq - pDer)
         if nodo.padre().padre() != None:
             nodo.padre().padre().cambiar_peso(nodo.padre().padre().peso - 1)
+        nuevoAux.cambiar_padre(nodo.padre())
         
     def rotarDerecha(self, nodo):
         aux = nodo.padre().dato
+        nuevoAux = Nodo(aux)
         nodo.padre().cambiar_dato(nodo.dato)
-        nodo.padre().cambiar_izq(Nodo(aux))
+        nodo.padre().cambiar_izq(nuevoAux)
         nodo.padre().cambiar_der(nodo.der())
-        nodo.padre().cambiar_peso(abs(nodo.padre().izq().peso - nodo.padre().der().peso))
+        pIzq = (nodo.padre().izq().peso
+                if (nodo.padre().izq() is not None) else 0)
+        pDer = (nodo.padre().der().peso
+                if (nodo.padre().der() is not None) else 0)
+        nodo.padre().cambiar_peso(pIzq - pDer)
         if nodo.padre().padre() != None:
             nodo.padre().padre().cambiar_peso(nodo.padre().padre().peso + 1)
+        nuevoAux.cambiar_padre(nodo.padre())
         
     def dobleRotarIzquierda(self, nodo):
         self.rotarDerecha(nodo.der())
