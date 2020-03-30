@@ -5,30 +5,37 @@ arbolMateria = []
 import Tkinter as tk
 import tkMessageBox
 
+#fafad2                                                  el amarillo xD
 root = tk.Tk()
 root.title("Arboles AVL")
-root.geometry("750x700")
+root.geometry("1200x500")
 tf = []
 var = []
 label = []
-frame=tk.Frame(root,width=720,height=380)
+frame=tk.Frame(root,width=1200,height=500)
 frame.pack(expand=True,fill="both")
-lienzo = tk.Canvas(frame,width=720,height=380,background="#fafad2", scrollregion=(0,0,1500,1500))
+lienzo = tk.Canvas(frame,width=500,height=380,background="#D2FAF5", scrollregion=(0,0,1500,1500))
 barra_h = tk.Scrollbar(frame, orient="horizontal")
 barra_h.pack(side="bottom", fill="x")
 barra_h.config(command=lienzo.xview)
 barra_v = tk.Scrollbar(frame, orient="vertical")
 barra_v.pack(side="right", fill="y")
 barra_v.config(command=lienzo.yview)
+barra = tk.Scrollbar(frame, orient="vertical")
+barra.pack(side= "right", fill="y")
+barra.place(x=552,y=340)
+barra.config(command=lienzo.yview)
 lienzo.config(xscrollcommand=barra_h.set, yscrollcommand=barra_v.set)
-lienzo.config(width=720,height=380)
+lienzo.config(width=540,height=450)
 lienzo.pack(side="left",expand=True)
-lienzo.place(x=10,y=300)
+lienzo.place(x=630,y=10)
 
-for i in range(6):
+for i in range(8):
     tf.append(tk.Entry(root, width = 20))
 
-for i in range(9):
+tf1 = tk.Text(root, width = 60, height = 3, yscrollcommand=barra.set)
+
+for i in range(13):
     var.append(tk.StringVar())
     label.append(tk.Label(root, textvariable = var[i], borderwidth = 2))
 
@@ -49,6 +56,15 @@ tf[4].place(x=222,y=186)
 
 tf[5].pack()
 tf[5].place(x=222,y=211)
+
+tf[6].pack()
+tf[6].place(x=170,y=283)
+
+tf[7].pack()
+tf[7].place(x=490,y=283)
+
+tf1.pack()
+tf1.place(x=67,y=340)
 
 label[0].pack()
 label[0].place(x=0,y=0)
@@ -88,6 +104,23 @@ var[7].set("Ingrese el codigo de la materia")
 label[8].pack()
 label[8].place(x=0,y=209)
 var[8].set("Ingrese el nombre de la materia")
+
+label[9].pack()
+label[9].place(x=0,y=245)
+var[9].set("Relacion")
+label[9].config(font = ("Courier",14), relief = "groove", width=15)
+
+label[10].pack()
+label[10].place(x=0,y=280)
+var[10].set("Nombre del arbol de alumnos")
+
+label[11].pack()
+label[11].place(x=320,y=280)
+var[11].set("Nombre del arbol de materias")
+
+label[12].pack()
+label[12].place(x=50,y=317)
+var[12].set("Ingrese en cada linea el codigo de la materia y del alumno separado por una coma(,) o viceversa")
 
 ##################################################################################################
 
@@ -507,8 +540,16 @@ def reMa():
     
 def liMa():
     return
-    
 
+def getText():
+    i = 1
+    j = 2.0
+    result = tf1.get(float(i),tk.END+"-1c").split(",")
+    line = 1
+    column = 10
+    result2 = tf1.get(j,'%d.%d' % (line, column)).split(",")
+    tkMessageBox.showinfo("prekauzion", result[0] + " " + result[1] + " " + result2[0])
+    
 
 insArA = tk.Button(root,text="Crear arbol(alumnos)", width=16, command=inArA)
 insArA.pack()
@@ -541,5 +582,13 @@ retMa.place(x=490,y=195)
 lisMa = tk.Button(root,text="Listar materias", width=16, command=liMa)
 lisMa.pack()
 lisMa.place(x=360,y=195)
+
+listar = tk.Button(root,text="Consultar materias por cada alumno", width=35, command=getText)
+listar.pack()
+listar.place(x=50,y=420)
+
+listar1 = tk.Button(root,text="Consultar alumnos por cada materia", width=35, command=getText)
+listar1.pack()
+listar1.place(x=320,y=420)
 
 root.mainloop()
