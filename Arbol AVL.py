@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-input
-"""
-Created on Fri Mar 27 12:01:34 2020
-@author: danie
-"""
+
 
 arbolAlumno = []
 arbolMateria = []
@@ -202,7 +197,6 @@ class ArbolAVL:
             nuevoAux2.cambiar_padre(nuevoAux)
         if nodo.izq() is not None:
             nodo.izq().cambiar_padre(nodo.padre())
-        return nodo.izq()
         
     def rotarDerecha(self, nodo):
         aux = nodo.padre().dato
@@ -243,15 +237,10 @@ class ArbolAVL:
         
     def dobleRotarIzquierda(self, nodo):
         self.rotarDerecha(nodo.der())
-        self.mostrar(self.raiz)
         self.rotarIzquierda(nodo)
     
     def dobleRotarDerecha(self, nodo):
-        nI = self.rotarIzquierda(nodo.izq())
-        nodo.cambiar_izq(nI)
-        print("nodo.izq= "+str(nodo.izq())+", resultado: "+str(nI))
-        print("nodo.padre.der.izq.dato: "+str(nodo.padre().der().izq()))
-        self.mostrar(self.raiz)
+        self.rotarIzquierda(nodo.izq())
         self.rotarDerecha(nodo)
         
     def vacio(self):
@@ -399,67 +388,14 @@ while op != 0:
             arbolMateria[pos].insertarNodo(codM,nomM)
             
     elif op == 7:
-        break
+        arbol = input("Ingrese el nombre del arbol: ")
+        if manejoArbol.existeArbol(arbol,2):
+            pos = manejoArbol.getPosicion()
+            codM = int(input("Ingrese el codigo de la materia: "))
+            arbolMateria[pos].eliminarNodo(codM)
     
     elif op == 8:
         arbol = input("Ingrese el nombre del arbol: ")
         if manejoArbol.existeArbol(arbol,2):
             pos = manejoArbol.getPosicion()
             arbolMateria[pos].mostrar(arbolMateria[pos].getRaiz())
-
-"""  
-    def eliminarNodo(self, codA):
-        nodoActual = self.getRaiz()
-        padreNodo = None
-        nodo = Nodo(codA)
-        
-        while nodoActual.dato != None:
-            if nodo.dato<nodoActual.dato:
-                padreNodo = nodoActual
-                nodoActual = nodoActual.izq()
-            elif nodo.dato>nodoActual.dato:
-                padreNodo = nodoActual
-                nodoActual = nodoActual.der()
-            else: break
-            
-        if nodoActual == None:
-            print("No existe el codigo.")
-        else:
-            if nodoActual.izq() == None:
-                r = nodoActual.der()
-            elif nodoActual.der() == None:
-                r = nodoActual.izq()
-            else:
-                s = nodoActual
-                r = nodoActual.der()
-                t = r.izq()
-                while t != None:
-                    s = r
-                    r = t
-                    t = t.izq()
-                
-                if nodoActual != s:
-                    s.cambiar_izq(r.der())
-                    r.cambiar_der(nodoActual.der())
-                r.cambiar_izq(nodoActual.izq())
-        
-            if padreNodo==None:
-                self.raiz = r
-            elif nodoActual == padreNodo.izq():
-                padreNodo.cambiar_izq(r)
-            else:
-                padreNodo.cambiar_der(r)
-            
-            longitud = len(self.codigo)
-            
-            for i in range(longitud):
-                if nodoActual.dato == self.codigo[i]:
-                    del(self.codigo[i])
-                    del(self.nombre[i])
-                    break
-            
-            
-            self.rebalancear(nodo)
-            nodoActual = None
-"""
-    
