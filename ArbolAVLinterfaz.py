@@ -119,7 +119,7 @@ label[11].place(x=320,y=280)
 var[11].set("Nombre del arbol de materias")
 
 label[12].pack()
-label[12].place(x=50,y=317)
+label[12].place(x=60,y=317)
 var[12].set("Ingrese en cada linea el codigo de la materia y del alumno separado por una coma(,) o viceversa")
 
 ##################################################################################################
