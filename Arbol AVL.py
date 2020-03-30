@@ -117,7 +117,23 @@ class ArbolAVL:
         aux = nodo.padre().dato
         nuevoAux = Nodo(aux)
         nodo.padre().cambiar_dato(nodo.dato)
-        nodo.padre().cambiar_der(nuevoAux)
+        nuevoAux2 = None
+        if nodo.der() != None and nodo.padre().der() != None:
+            aux2 = nodo.padre().der().dato
+            nuevoAux2 = Nodo(aux2)
+            nuevoAux.cambiar_izq(nodo.der())
+            nuevoAux.cambiar_der(nuevoAux2)
+            nodo.padre().cambiar_der(nuevoAux)
+        elif nodo.padre().der() != None:
+            aux2 = nodo.padre().der().dato
+            nuevoAux2 = Nodo(aux2)
+            nuevoAux.cambiar_der(nuevoAux2)
+            nodo.padre().cambiar_der(nuevoAux)
+        elif nodo.der() != None:
+            nuevoAux.cambiar_izq(nodo.der())
+            nodo.padre().cambiar_der(nuevoAux)
+        else:
+            nodo.padre().cambiar_der(nuevoAux)
         nodo.padre().cambiar_izq(nodo.izq())
         pIzq = (nodo.padre().izq().peso
                 if (nodo.padre().izq() is not None) else 0)
@@ -127,12 +143,32 @@ class ArbolAVL:
         if nodo.padre().padre() != None:
             nodo.padre().padre().cambiar_peso(nodo.padre().padre().peso - 1)
         nuevoAux.cambiar_padre(nodo.padre())
+        if nuevoAux2 is not None:
+            nuevoAux2.cambiar_padre(nuevoAux)
+        if nodo.izq() is not None:
+            nodo.izq().cambiar_padre(nodo.padre())
         
     def rotarDerecha(self, nodo):
         aux = nodo.padre().dato
         nuevoAux = Nodo(aux)
         nodo.padre().cambiar_dato(nodo.dato)
-        nodo.padre().cambiar_izq(nuevoAux)
+        nuevoAux2 = None
+        if nodo.izq() != None and nodo.padre().izq() != None:
+            aux2 = nodo.padre().izq().dato
+            nuevoAux2 = Nodo(aux2)
+            nuevoAux.cambiar_der(nodo.izq())
+            nuevoAux.cambiar_izq(nuevoAux2)
+            nodo.padre().cambiar_izq(nuevoAux)
+        elif nodo.padre().izq() != None:
+            aux2 = nodo.padre().izq().dato
+            nuevoAux2 = Nodo(aux2)
+            nuevoAux.cambiar_izq(nuevoAux2)
+            nodo.padre().cambiar_izq(nuevoAux)
+        elif nodo.izq() != None:
+            nuevoAux.cambiar_der(nodo.izq())
+            nodo.padre().cambiar_izq(nuevoAux)
+        else:
+            nodo.padre().cambiar_izq(nuevoAux)
         nodo.padre().cambiar_der(nodo.der())
         pIzq = (nodo.padre().izq().peso
                 if (nodo.padre().izq() is not None) else 0)
@@ -142,6 +178,10 @@ class ArbolAVL:
         if nodo.padre().padre() != None:
             nodo.padre().padre().cambiar_peso(nodo.padre().padre().peso + 1)
         nuevoAux.cambiar_padre(nodo.padre())
+        if nuevoAux2 is not None:
+            nuevoAux2.cambiar_padre(nuevoAux)
+        if nodo.der() is not None:
+            nodo.der().cambiar_padre(nodo.padre())
         
     def dobleRotarIzquierda(self, nodo):
         self.rotarDerecha(nodo.der())
